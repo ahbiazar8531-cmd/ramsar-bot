@@ -13,9 +13,10 @@
     <style>
         :root {
             --primary: #64ffda;
-            --bg-dark: #0a192f;
-            --card-bg: #112240;
-            --input-bg: #1d2d50;
+            --bg-dark: #03070f;
+            --card-bg: #0b111a;
+            --input-bg: #121d2b;
+            --result-item-bg: #1a2638;
             --text-white: #e6f1ff;
             --accent-red: #ff4d4d;
         }
@@ -24,158 +25,154 @@
             background-color: var(--bg-dark);
             margin: 0;
             padding: 10px;
-            font-family: 'Tahoma', 'Segoe UI', sans-serif;
+            font-family: 'Tahoma', sans-serif;
             color: var(--text-white);
             direction: rtl;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 900px;
             margin: auto;
             background-color: var(--card-bg);
             padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid rgba(100, 255, 218, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+            border: 1px solid rgba(100, 255, 218, 0.05);
         }
 
         h1 {
             color: var(--primary);
             text-align: center;
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             margin-bottom: 25px;
         }
 
-        /* بخش فیلترها */
         .filter-section {
             display: grid;
             grid-template-columns: 1fr;
             gap: 15px;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: rgba(255,255,255,0.03);
-            border-radius: 12px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 15px;
         }
 
         @media (min-width: 768px) {
             .filter-section { grid-template-columns: 1fr 1fr; }
         }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-size: 13px;
-            color: var(--primary);
-        }
-
-        /* استایل Select2 برای تم تاریک */
+        /* --- اصلاح بخش سفید و ناخوانا در Select2 --- */
         .select2-container--default .select2-selection--single {
             background-color: var(--input-bg) !important;
             border: 1px solid rgba(100, 255, 218, 0.2) !important;
-            height: 48px !important;
-            border-radius: 8px !important;
-            display: flex;
-            align-items: center;
+            height: 50px !important;
+            border-radius: 10px !important;
         }
-        .select2-container--default .select2-selection--single .select2-selection__rendered {
-            color: white !important;
-            text-align: right;
-            padding-right: 15px;
+        .select2-selection__rendered { 
+            color: white !important; 
+            line-height: 50px !important; 
+            text-align: right; 
+            padding-right: 15px !important; 
         }
+
+        /* تنظیمات لیست بازشونده (Dropdown) */
         .select2-dropdown {
-            background-color: var(--card-bg) !important;
+            background-color: var(--input-bg) !important;
             border: 1px solid var(--primary) !important;
             color: white !important;
+        }
+
+        .select2-results__option {
+            background-color: var(--input-bg) !important;
+            color: rgba(255, 255, 255, 0.8) !important;
+            text-align: right !important;
+            padding: 10px 15px !important;
+        }
+
+        /* رنگ گزینه در حالت هاور یا انتخاب شده */
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background-color: var(--primary) !important;
+            color: #03070f !important;
+        }
+
+        /* کادر جستجوی داخل منو */
+        .select2-search--dropdown {
+            background-color: var(--input-bg) !important;
         }
         .select2-search__field {
             background-color: var(--bg-dark) !important;
             color: white !important;
-            direction: rtl;
+            border: 1px solid rgba(100, 255, 218, 0.3) !important;
+            border-radius: 5px !important;
+            direction: rtl !important;
         }
 
         /* دکمه‌ها */
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 5px;
-        }
+        .btn-group { display: flex; gap: 10px; margin-top: 5px; }
         button {
-            flex: 1;
-            padding: 14px;
-            border-radius: 8px;
-            border: none;
-            font-weight: bold;
-            font-family: 'Tahoma';
-            cursor: pointer;
-            transition: 0.3s;
+            flex: 1; padding: 15px; border-radius: 10px; border: none;
+            font-weight: bold; cursor: pointer; transition: 0.3s; font-family: 'Tahoma';
         }
-        .btn-search { background: var(--primary); color: #0a192f; }
-        .btn-search:hover { opacity: 0.9; }
+        .btn-search { background: var(--primary); color: #03070f; }
         .btn-reset { background: transparent; color: var(--accent-red); border: 1px solid var(--accent-red); }
 
-        /* ریسپانسیو کردن جدول (تبدیل به کارت در موبایل) */
-        .results-area { margin-top: 25px; }
-        
-        table { width: 100%; border-collapse: collapse; }
-        th { background: rgba(100, 255, 218, 0.1); color: var(--primary); padding: 15px; font-weight: normal; border-bottom: 2px solid var(--primary); }
-        td { padding: 15px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; }
+        /* بخش نتایج */
+        .results-area { margin-top: 10px; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
+        tr.result-row td { 
+            background: var(--result-item-bg); 
+            padding: 18px 15px; 
+            text-align: center;
+        }
+        tr.result-row td:first-child { border-radius: 0 12px 12px 0; }
+        tr.result-row td:last-child { border-radius: 12px 0 0 12px; }
 
         @media (max-width: 650px) {
             table, thead, tbody, th, td, tr { display: block; }
             thead tr { position: absolute; top: -9999px; left: -9999px; }
-            tr {
-                margin-bottom: 15px;
-                background: rgba(255,255,255,0.02);
-                border: 1px solid rgba(100, 255, 218, 0.1);
-                border-radius: 12px;
-                padding: 10px;
+            tr.result-row {
+                margin-bottom: 25px;
+                background: var(--result-item-bg);
+                border: 1px solid rgba(100, 255, 218, 0.2);
+                border-radius: 15px;
+                padding: 15px;
             }
             td {
-                border: none;
+                border: none !important;
                 position: relative;
-                padding-right: 45%;
+                padding-right: 45% !important;
                 text-align: right;
-                padding-top: 10px;
-                padding-bottom: 10px;
-                border-bottom: 1px solid rgba(255,255,255,0.05);
+                padding: 12px 5px !important;
             }
-            td:last-child { border-bottom: none; }
             td:before {
-                position: absolute;
-                right: 15px;
-                width: 40%;
-                white-space: nowrap;
-                color: var(--primary);
-                font-weight: bold;
+                position: absolute; right: 10px; width: 40%;
+                color: var(--primary); font-weight: bold;
                 content: attr(data-label);
             }
         }
-
-        #loading { text-align: center; color: var(--primary); padding: 40px; }
+        #loading { text-align: center; color: var(--primary); padding: 50px; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>🗓️ برنامه کلاسی هوشمند</h1>
-
-    <div id="loading">⏳ در حال دریافت اطلاعات از فایل اکسل...</div>
+    <h1>🗓️ سامانه هوشمند برنامه کلاسی</h1>
+    <div id="loading">⏳ در حال آماده‌سازی اطلاعات...</div>
 
     <div class="filter-section" id="filterUI" style="display:none;">
         <div>
-            <label>🔎 جستجوی درس:</label>
+            <label>🔎 انتخاب نام درس:</label>
             <select id="lessonSelect" style="width: 100%"><option value="">همه دروس</option></select>
         </div>
         <div>
-            <label>👨‍🏫 جستجوی استاد:</label>
+            <label>👨‍🏫 انتخاب نام استاد:</label>
             <select id="profSelect" style="width: 100%"><option value="">همه اساتید</option></select>
         </div>
         <div class="btn-group">
-            <button class="btn-search" onclick="performSearch()">نمایش برنامه</button>
+            <button class="btn-search" onclick="performSearch()">جستجوی برنامه</button>
             <button class="btn-reset" onclick="resetFilters()">پاک کردن</button>
         </div>
     </div>
-
     <div class="results-area" id="resultsArea"></div>
 </div>
 
@@ -183,7 +180,6 @@
     const EXCEL_URL = './schedule.xlsx';
     let fullData = [];
 
-    // تبدیل فرمت زمان اکسل به متن قابل فهم
     function formatTime(t) {
         if (!t) return '-';
         if (typeof t === 'string') return t;
@@ -196,67 +192,51 @@
     async function init() {
         try {
             const response = await fetch(EXCEL_URL);
-            if (!response.ok) throw new Error();
             const data = await response.arrayBuffer();
             const workbook = XLSX.read(data, { type: 'array' });
             fullData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
             
-            populateMenus();
+            const lessons = [...new Set(fullData.map(r => r['نام درس']))].filter(Boolean).sort();
+            const profs = [...new Set(fullData.map(r => r['نام استاد']))].filter(Boolean).sort();
             
-            // فعال‌سازی منوهای جستجوگر
-            $('#lessonSelect, #profSelect').select2({
-                dir: "rtl",
-                language: { noResults: () => "یافت نشد" }
-            });
+            lessons.forEach(l => $('#lessonSelect').append(new Option(l, l)));
+            profs.forEach(p => $('#profSelect').append(new Option(p, p)));
 
+            $('#lessonSelect, #profSelect').select2({ dir: "rtl" });
             $('#loading').hide();
-            $('#filterUI').css('display', 'grid');
+            $('#filterUI').fadeIn();
         } catch (e) {
-            $('#loading').html("❌ خطا: فایل schedule.xlsx پیدا نشد.");
+            $('#loading').html("❌ خطا: فایل اکسل یافت نشد.");
         }
-    }
-
-    function populateMenus() {
-        const lessons = [...new Set(fullData.map(r => r['نام درس']))].filter(Boolean).sort();
-        const profs = [...new Set(fullData.map(r => r['نام استاد']))].filter(Boolean).sort();
-        
-        lessons.forEach(l => $('#lessonSelect').append(new Option(l, l)));
-        profs.forEach(p => $('#profSelect').append(new Option(p, p)));
     }
 
     function performSearch() {
         const lesson = $('#lessonSelect').val();
         const prof = $('#profSelect').val();
-        
-        const filtered = fullData.filter(r => 
-            (!lesson || r['نام درس'] === lesson) && (!prof || r['نام استاد'] === prof)
-        );
+        const filtered = fullData.filter(r => (!lesson || r['نام درس'] === lesson) && (!prof || r['نام استاد'] === prof));
 
         if (filtered.length === 0) {
-            $('#resultsArea').html("<p style='text-align:center; padding:20px;'>نتیجه‌ای یافت نشد.</p>");
+            $('#resultsArea').html("<p style='text-align:center; margin-top:30px; opacity:0.6;'>موردی یافت نشد.</p>");
             return;
         }
 
-        let html = `<table><thead><tr>
-            <th>ردیف</th><th>درس</th><th>استاد</th><th>روز</th><th>ساعت</th><th>کلاس</th>
-        </tr></thead><tbody>`;
-
+        let html = `<table><thead><tr><th>ردیف</th><th>درس</th><th>استاد</th><th>روز</th><th>ساعت</th><th>کلاس</th></tr></thead><tbody>`;
         filtered.forEach((r, i) => {
-            html += `<tr>
+            html += `<tr class="result-row">
                 <td data-label="ردیف">${i + 1}</td>
-                <td data-label="درس" style="color:var(--primary)">${r['نام درس'] || '-'}</td>
+                <td data-label="درس" style="color:var(--primary); font-weight:bold;">${r['نام درس'] || '-'}</td>
                 <td data-label="استاد">${r['نام استاد'] || '-'}</td>
                 <td data-label="روز">${r['روز'] || '-'}</td>
                 <td data-label="ساعت">${formatTime(r['زمان شروع'] || r['زمان'])}</td>
                 <td data-label="کلاس">${r['شماره کلاس'] || '-'}</td>
             </tr>`;
         });
-        $('#resultsArea').html(html + "</tbody></table>");
+        $('#resultsArea').hide().html(html + "</tbody></table>").fadeIn();
     }
 
     function resetFilters() {
         $('#lessonSelect, #profSelect').val(null).trigger('change');
-        $('#resultsArea').empty();
+        $('#resultsArea').fadeOut();
     }
 
     $(document).ready(init);
