@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>پنل هوشمند برنامه کلاسی</title>
+    <title>سامانه هوشمند برنامه کلاسی</title>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -17,50 +17,48 @@
             --card-bg: #112240;
             --input-bg: #1d2d50;
             --text-white: #e6f1ff;
-            --accent-red: #f44336;
+            --accent-red: #ff4d4d;
         }
 
         body {
             background-color: var(--bg-dark);
             margin: 0;
-            padding: 10px; /* کاهش پدینگ برای گوشی */
-            font-family: 'Tahoma', sans-serif;
+            padding: 10px;
+            font-family: 'Tahoma', 'Segoe UI', sans-serif;
             color: var(--text-white);
+            direction: rtl;
         }
 
         .container {
-            background-color: var(--card-bg);
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
             max-width: 1000px;
             margin: auto;
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             border: 1px solid rgba(100, 255, 218, 0.1);
-            box-sizing: border-box;
         }
 
-        h1 { 
-            color: var(--primary); 
-            text-align: center; 
-            font-size: 1.2rem; 
-            margin-bottom: 20px;
+        h1 {
+            color: var(--primary);
+            text-align: center;
+            font-size: 1.4rem;
+            margin-bottom: 25px;
         }
 
-        .filter-grid {
+        /* بخش فیلترها */
+        .filter-section {
             display: grid;
-            grid-template-columns: 1fr; /* در حالت عادی تک ستونه برای موبایل */
+            grid-template-columns: 1fr;
             gap: 15px;
-            background: rgba(255, 255, 255, 0.03);
-            padding: 15px;
-            border-radius: 10px;
             margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
         }
 
-        /* در دسکتاپ (صفحه بزرگتر از 768 پیکسل) دو ستونه شود */
         @media (min-width: 768px) {
-            .filter-grid { grid-template-columns: 1fr 1fr; }
-            h1 { font-size: 1.6rem; }
-            .container { padding: 30px; }
+            .filter-section { grid-template-columns: 1fr 1fr; }
         }
 
         label {
@@ -70,68 +68,90 @@
             color: var(--primary);
         }
 
-        /* استایل Select2 */
+        /* استایل Select2 برای تم تاریک */
         .select2-container--default .select2-selection--single {
             background-color: var(--input-bg) !important;
             border: 1px solid rgba(100, 255, 218, 0.2) !important;
-            height: 45px !important;
+            height: 48px !important;
             border-radius: 8px !important;
+            display: flex;
+            align-items: center;
         }
         .select2-container--default .select2-selection--single .select2-selection__rendered {
-            color: var(--text-white) !important;
-            line-height: 45px !important;
-            padding-right: 15px;
+            color: white !important;
             text-align: right;
+            padding-right: 15px;
         }
-        .select2-dropdown { background-color: var(--card-bg) !important; border: 1px solid var(--primary) !important; }
-        .select2-search__field { background-color: var(--bg-dark) !important; color: white !important; direction: rtl; }
+        .select2-dropdown {
+            background-color: var(--card-bg) !important;
+            border: 1px solid var(--primary) !important;
+            color: white !important;
+        }
+        .select2-search__field {
+            background-color: var(--bg-dark) !important;
+            color: white !important;
+            direction: rtl;
+        }
 
-        .button-group {
+        /* دکمه‌ها */
+        .btn-group {
             display: flex;
             gap: 10px;
             margin-top: 5px;
         }
-
         button {
             flex: 1;
-            padding: 12px;
+            padding: 14px;
             border-radius: 8px;
-            cursor: pointer;
+            border: none;
             font-weight: bold;
             font-family: 'Tahoma';
-            font-size: 14px;
-            border: none;
+            cursor: pointer;
             transition: 0.3s;
         }
-
-        .btn-apply { background: var(--primary); color: #0a192f; }
+        .btn-search { background: var(--primary); color: #0a192f; }
+        .btn-search:hover { opacity: 0.9; }
         .btn-reset { background: transparent; color: var(--accent-red); border: 1px solid var(--accent-red); }
 
-        /* جلوگیری از بیرون زدن جدول در موبایل */
-        .results-wrapper { 
-            width: 100%;
-            overflow-x: auto; /* فعال کردن اسکرول افقی فقط برای جدول */
-            margin-top: 20px;
-            border-radius: 8px;
-            background: rgba(0,0,0,0.2);
+        /* ریسپانسیو کردن جدول (تبدیل به کارت در موبایل) */
+        .results-area { margin-top: 25px; }
+        
+        table { width: 100%; border-collapse: collapse; }
+        th { background: rgba(100, 255, 218, 0.1); color: var(--primary); padding: 15px; font-weight: normal; border-bottom: 2px solid var(--primary); }
+        td { padding: 15px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; }
+
+        @media (max-width: 650px) {
+            table, thead, tbody, th, td, tr { display: block; }
+            thead tr { position: absolute; top: -9999px; left: -9999px; }
+            tr {
+                margin-bottom: 15px;
+                background: rgba(255,255,255,0.02);
+                border: 1px solid rgba(100, 255, 218, 0.1);
+                border-radius: 12px;
+                padding: 10px;
+            }
+            td {
+                border: none;
+                position: relative;
+                padding-right: 45%;
+                text-align: right;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid rgba(255,255,255,0.05);
+            }
+            td:last-child { border-bottom: none; }
+            td:before {
+                position: absolute;
+                right: 15px;
+                width: 40%;
+                white-space: nowrap;
+                color: var(--primary);
+                font-weight: bold;
+                content: attr(data-label);
+            }
         }
 
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            min-width: 600px; /* حداقل عرض جدول برای خوانایی */
-        }
-
-        th, td { 
-            padding: 12px 8px; 
-            text-align: center; 
-            font-size: 12px; 
-            border-bottom: 1px solid rgba(255,255,255,0.05); 
-        }
-
-        th { background-color: rgba(100, 255, 218, 0.1); color: var(--primary); }
-
-        #loading { text-align: center; color: var(--primary); padding: 30px; }
+        #loading { text-align: center; color: var(--primary); padding: 40px; }
     </style>
 </head>
 <body>
@@ -139,31 +159,31 @@
 <div class="container">
     <h1>🗓️ برنامه کلاسی هوشمند</h1>
 
-    <div id="loading">⏳ در حال بارگذاری...</div>
+    <div id="loading">⏳ در حال دریافت اطلاعات از فایل اکسل...</div>
 
-    <div class="filter-grid" id="filterUI" style="display:none;">
+    <div class="filter-section" id="filterUI" style="display:none;">
         <div>
-            <label>🔎 انتخاب درس:</label>
+            <label>🔎 جستجوی درس:</label>
             <select id="lessonSelect" style="width: 100%"><option value="">همه دروس</option></select>
         </div>
         <div>
-            <label>👨‍🏫 انتخاب استاد:</label>
+            <label>👨‍🏫 جستجوی استاد:</label>
             <select id="profSelect" style="width: 100%"><option value="">همه اساتید</option></select>
         </div>
-        
-        <div class="button-group">
-            <button class="btn-apply" onclick="performSearch()">جستجو</button>
+        <div class="btn-group">
+            <button class="btn-search" onclick="performSearch()">نمایش برنامه</button>
             <button class="btn-reset" onclick="resetFilters()">پاک کردن</button>
         </div>
     </div>
 
-    <div class="results-wrapper" id="resultsArea"></div>
+    <div class="results-area" id="resultsArea"></div>
 </div>
 
 <script>
-    const EXCEL_FILE = './schedule.xlsx'; 
-    let excelData = [];
+    const EXCEL_URL = './schedule.xlsx';
+    let fullData = [];
 
+    // تبدیل فرمت زمان اکسل به متن قابل فهم
     function formatTime(t) {
         if (!t) return '-';
         if (typeof t === 'string') return t;
@@ -173,62 +193,73 @@
         return h.toString().padStart(2, '0') + ":" + m.toString().padStart(2, '0');
     }
 
-    async function loadExcel() {
+    async function init() {
         try {
-            const res = await fetch(EXCEL_FILE);
-            const arrayBuffer = await res.arrayBuffer();
-            const workbook = XLSX.read(arrayBuffer, { type: 'array' });
-            excelData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
-            setupUI();
-        } catch (err) {
-            document.getElementById('loading').innerHTML = "❌ خطا در بارگذاری فایل اکسل";
+            const response = await fetch(EXCEL_URL);
+            if (!response.ok) throw new Error();
+            const data = await response.arrayBuffer();
+            const workbook = XLSX.read(data, { type: 'array' });
+            fullData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]);
+            
+            populateMenus();
+            
+            // فعال‌سازی منوهای جستجوگر
+            $('#lessonSelect, #profSelect').select2({
+                dir: "rtl",
+                language: { noResults: () => "یافت نشد" }
+            });
+
+            $('#loading').hide();
+            $('#filterUI').css('display', 'grid');
+        } catch (e) {
+            $('#loading').html("❌ خطا: فایل schedule.xlsx پیدا نشد.");
         }
     }
 
-    function setupUI() {
-        const lessons = [...new Set(excelData.map(i => i['نام درس']))].filter(Boolean).sort();
-        const profs = [...new Set(excelData.map(i => i['نام استاد']))].filter(Boolean).sort();
+    function populateMenus() {
+        const lessons = [...new Set(fullData.map(r => r['نام درس']))].filter(Boolean).sort();
+        const profs = [...new Set(fullData.map(r => r['نام استاد']))].filter(Boolean).sort();
         
-        lessons.forEach(n => $('#lessonSelect').append(new Option(n, n)));
-        profs.forEach(n => $('#profSelect').append(new Option(n, n)));
-
-        $('.filter-grid select').select2({
-            dir: "rtl",
-            language: { noResults: () => "یافت نشد" }
-        });
-
-        document.getElementById('loading').style.display = 'none';
-        document.getElementById('filterUI').style.display = 'grid';
+        lessons.forEach(l => $('#lessonSelect').append(new Option(l, l)));
+        profs.forEach(p => $('#profSelect').append(new Option(p, p)));
     }
 
     function performSearch() {
-        const l = $('#lessonSelect').val();
-        const p = $('#profSelect').val();
-        const filtered = excelData.filter(r => (!l || r['نام درس'] === l) && (!p || r['نام استاد'] === p));
+        const lesson = $('#lessonSelect').val();
+        const prof = $('#profSelect').val();
         
+        const filtered = fullData.filter(r => 
+            (!lesson || r['نام درس'] === lesson) && (!prof || r['نام استاد'] === prof)
+        );
+
+        if (filtered.length === 0) {
+            $('#resultsArea').html("<p style='text-align:center; padding:20px;'>نتیجه‌ای یافت نشد.</p>");
+            return;
+        }
+
         let html = `<table><thead><tr>
             <th>ردیف</th><th>درس</th><th>استاد</th><th>روز</th><th>ساعت</th><th>کلاس</th>
         </tr></thead><tbody>`;
 
         filtered.forEach((r, i) => {
             html += `<tr>
-                <td>${i+1}</td>
-                <td style="color:var(--primary)">${r['نام درس'] || '-'}</td>
-                <td>${r['نام استاد'] || '-'}</td>
-                <td>${r['روز'] || '-'}</td>
-                <td>${formatTime(r['زمان شروع'] || r['زمان'])}</td>
-                <td>${r['شماره کلاس'] || '-'}</td>
+                <td data-label="ردیف">${i + 1}</td>
+                <td data-label="درس" style="color:var(--primary)">${r['نام درس'] || '-'}</td>
+                <td data-label="استاد">${r['نام استاد'] || '-'}</td>
+                <td data-label="روز">${r['روز'] || '-'}</td>
+                <td data-label="ساعت">${formatTime(r['زمان شروع'] || r['زمان'])}</td>
+                <td data-label="کلاس">${r['شماره کلاس'] || '-'}</td>
             </tr>`;
         });
-        document.getElementById('resultsArea').innerHTML = html + "</tbody></table>";
+        $('#resultsArea').html(html + "</tbody></table>");
     }
 
     function resetFilters() {
         $('#lessonSelect, #profSelect').val(null).trigger('change');
-        document.getElementById('resultsArea').innerHTML = "";
+        $('#resultsArea').empty();
     }
 
-    $(document).ready(loadExcel);
+    $(document).ready(init);
 </script>
 </body>
 </html>
